@@ -8,5 +8,12 @@ export default defineSchema({
     credits: v.number(),
     subscriptionId: v.optional(v.string()), // Optional, so users may not have it initially
     subscriptionStatus: v.boolean(),
-  }).index("by_email", ["email"]), // ✅ Index for faster email lookup
+  }).index("by_email", ["email"]), 
+
+  Discussion: defineTable({
+    coachingOption: v.string(),
+    topic: v.string(),
+    expertName: v.string(),
+    conversation: v.optional(v.any())
+  })
 });
