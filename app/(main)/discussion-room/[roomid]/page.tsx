@@ -4,7 +4,7 @@ import { useQuery } from 'convex/react';
 import { useParams } from 'next/navigation';
 import { Id } from "@/convex/_generated/dataModel";
 import React, { useEffect, useRef, useState } from 'react';
-import { CoachingExperts } from '@/services/CoachingOptions';
+import { CoachingExperts } from '@/services/Options';
 import Image from 'next/image';
 import { UserButton } from '@stackframe/stack';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import RecordRTC from 'recordrtc';
 import { AssemblyAI, RealtimeTranscriber } from 'assemblyai';
 import { AIModel, getToken } from '@/services/GlobalServices';
 import { Content } from 'next/font/google';
+import { Loader2Icon } from 'lucide-react';
 
 interface Expert {
     name: string;
@@ -25,6 +26,7 @@ const DiscussionRoom = () => {
     const realTimeTranscriber = useRef<RealtimeTranscriber | null>(null);
     const recorder = useRef<RecordRTC | null>(null);
     const silenceTimeout = useRef<NodeJS.Timeout | null>(null);
+    const [Loading, setLoading] = useState<boolean>(false)
     const [transcribe, setTranscribe] = useState<string>("");
     let texts: Record<number, string> = {};
     interface Message {
@@ -52,8 +54,10 @@ const DiscussionRoom = () => {
     }, [DiscussionRoomData]);
 
     const connectToServer = async () => {
+        setLoading(true)
         try {
             setEnableMic(true);
+            
 
             // Initialize Assembly AI
             realTimeTranscriber.current = new RealtimeTranscriber({
@@ -71,8 +75,13 @@ const DiscussionRoom = () => {
                     }])
 
                     // calling Ai model text model to get ans
-                    const aiResp=await AIModel(DiscussionRoomData?.topic!,DiscussionRoomData?.coachingOption!,transcript.text)
-                    console.log(aiResp);
+                    if (!DiscussionRoomData?.coachingOption) {
+                        console.error("Coaching option missing in DiscussionRoomData");
+                        return;
+                    }
+                    const aiResp = await AIModel(DiscussionRoomData.topic, DiscussionRoomData.coachingOption, transcript.text);
+                    
+                    console.log("Ai Response:",aiResp);
                     
                 }
                 const keys = Object.keys(texts).map(Number).sort((a, b) => a - b);
@@ -80,6 +89,7 @@ const DiscussionRoom = () => {
             });
 
             await realTimeTranscriber.current.connect();
+            setLoading(false)
 
             if (typeof window !== "undefined" && typeof navigator !== "undefined") {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -112,6 +122,7 @@ const DiscussionRoom = () => {
 
     const disconnect = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        setLoading(true)
         if (realTimeTranscriber.current) {
             await realTimeTranscriber.current.close();
             realTimeTranscriber.current = null;
@@ -128,6 +139,7 @@ const DiscussionRoom = () => {
         }
 
         setEnableMic(false);
+        setLoading(false)
     };
 
     return (
@@ -160,12 +172,12 @@ const DiscussionRoom = () => {
                     {/* Centered Connect Button */}
                     <div className='flex justify-center mt-5'>
                         {!enableMic ? (
-                            <Button className='px-6 py-2 text-lg font-semibold' onClick={connectToServer}>
-                                Connect
+                            <Button className='px-6 py-2 text-lg font-semibold' onClick={connectToServer} disabled={Loading}>
+                                {Loading && <Loader2Icon className='animate-spin'/>}Connect
                             </Button>
                         ) : (
                             <Button variant="destructive" onClick={disconnect}>
-                                Disconnect
+                                {Loading && <Loader2Icon className='animate-spin'/>}Disconnect
                             </Button>
                         )}
                     </div>

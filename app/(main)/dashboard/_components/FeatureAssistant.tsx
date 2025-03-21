@@ -1,6 +1,6 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import { Coachingclass } from '@/services/CoachingOptions'
+import { Coachingclass } from '@/services/Options'
 import { useUser } from '@stackframe/stack'
 import Image from 'next/image'
 import { motion } from 'framer-motion'

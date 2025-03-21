@@ -2,7 +2,7 @@
 import React, { ReactNode, useState } from "react";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
-import { CoachingExperts } from "@/services/CoachingOptions";
+import { CoachingExperts } from "@/services/Options";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
