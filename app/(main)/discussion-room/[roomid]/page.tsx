@@ -10,7 +10,8 @@ import { UserButton } from '@stackframe/stack';
 import { Button } from '@/components/ui/button';
 import RecordRTC from 'recordrtc';
 import { AssemblyAI, RealtimeTranscriber } from 'assemblyai';
-import { getToken } from '@/services/GlobalServices';
+import { AIModel, getToken } from '@/services/GlobalServices';
+import { Content } from 'next/font/google';
 
 interface Expert {
     name: string;
@@ -26,6 +27,13 @@ const DiscussionRoom = () => {
     const silenceTimeout = useRef<NodeJS.Timeout | null>(null);
     const [transcribe, setTranscribe] = useState<string>("");
     let texts: Record<number, string> = {};
+    interface Message {
+        role: string;
+        content: string;
+    }
+    
+    const [conversatation, setConversatation] = useState<Message[]>([]);
+    
 
     const DiscussionRoomData = roomid
         ? useQuery(api.functions.Discussion.GetDiscussion, {
@@ -53,8 +61,20 @@ const DiscussionRoom = () => {
                 sampleRate: 16_000,
             });
 
-            realTimeTranscriber.current.on('transcript', (transcript) => {
+            realTimeTranscriber.current.on('transcript',async (transcript) => {
                 texts[transcript.audio_start] = transcript.text;
+                let msg = "";
+                if(transcript.message_type=='FinalTranscript'){
+                    setConversatation(prev=>[...prev,{
+                        role:'user',
+                        content:transcript.text
+                    }])
+
+                    // calling Ai model text model to get ans
+                    const aiResp=await AIModel(DiscussionRoomData?.topic!,DiscussionRoomData?.coachingOption!,transcript.text)
+                    console.log(aiResp);
+                    
+                }
                 const keys = Object.keys(texts).map(Number).sort((a, b) => a - b);
                 setTranscribe(keys.map((key) => texts[key]).join(" "));
             });
