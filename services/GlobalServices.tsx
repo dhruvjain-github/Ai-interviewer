@@ -18,7 +18,7 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true
 });
 
-export const AIModel = async (topic: string, coachingOption: string, msg: string): Promise<string | null> => {
+export const AIModel = async (topic: string, coachingOption: string, msg: string): Promise<any | null> => {
     console.log("Requested Coaching Option:", coachingOption);
 
     // Ensure the name exactly matches an existing option
@@ -40,8 +40,8 @@ export const AIModel = async (topic: string, coachingOption: string, msg: string
             ]
         });
 
-        console.log("AI Response:", completion.choices[0]?.message?.content || "No response");
-        return completion.choices[0]?.message?.content || null;
+        console.log("AI Response:", completion.choices[0]?.message || "No response");
+        return completion.choices[0]?.message || null;
     } catch (error) {
         console.error("Error generating AI response:", error);
         return null;
