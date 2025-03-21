@@ -17,6 +17,7 @@ import {
     DialogTrigger,
   } from "@/components/ui/dialog";
 import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 
 interface CoachingOption {
@@ -35,6 +36,9 @@ const UserInputDialog: React.FC<UserInputDialogProps> = ({ children, CoachingOpt
     const [Topic, setTopic] = useState<string>("")
     const createNewDisscussion = useMutation(api.functions.Discussion.CreateDiscussion)
     const [Loading, setLoading] = useState<boolean>(false)
+    const [OpenDialog, setOpenDialog] = useState<boolean>(false)
+    const router=useRouter()
+    
 
     const OnclickNext=async()=>{
         setLoading(true)
@@ -44,11 +48,15 @@ const UserInputDialog: React.FC<UserInputDialogProps> = ({ children, CoachingOpt
             expertName:selectedExpert
         })
         setLoading(false)
-        console.log(result)
+        setOpenDialog(false)
+        // console
+        console.log("User Input data ",result)
+
+        router.push(`/discussion-room/${result}`)
     }
 
   return (
-    <Dialog>
+    <Dialog open={OpenDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="p-6 bg-white rounded-lg shadow-lg">
         <DialogHeader>

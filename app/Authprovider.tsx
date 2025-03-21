@@ -13,7 +13,8 @@ const Authprovider = ({children}:any) => {
     const CreateUser=useMutation(api.functions.user.CreateUser)
 
     useEffect(()=>{
-        console.log(user);
+
+        // console.log(user);
         user && CreateNewUser()
         
     },[user])
@@ -31,7 +32,7 @@ const Authprovider = ({children}:any) => {
           email: user.primaryEmail, // Guaranteed to be a string
         });
       
-        console.log(result);
+        // console.log(result);
         setUserdata(result);
       };
       
