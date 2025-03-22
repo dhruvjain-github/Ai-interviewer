@@ -1,6 +1,8 @@
 import axios from "axios";
 import OpenAI from "openai";
 import { Coachingclass } from "./Options";
+import { fromEnv } from "@aws-sdk/credential-provider-env";
+import {PollyClient,SynthesizeSpeechCommand,VoiceId} from "@aws-sdk/client-polly"
 
 export const getToken = async (): Promise<string | null> => {
     try {
@@ -18,7 +20,7 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true
 });
 
-export const AIModel = async (topic: string, coachingOption: string, msg: string): Promise<any | null> => {
+export const AIModel = async (topic: string, coachingOption: string, LastTwoMessage:any): Promise<any | null> => {
     console.log("Requested Coaching Option:", coachingOption);
 
     // Ensure the name exactly matches an existing option
@@ -35,8 +37,8 @@ export const AIModel = async (topic: string, coachingOption: string, msg: string
         const completion = await openai.chat.completions.create({
             model: "google/gemini-2.0-pro-exp-02-05:free",
             messages: [
-                { role: "system", content: PROMPT },
-                { role: "user", content: msg }
+                { role: "assistant", content: PROMPT },
+                ...LastTwoMessage
             ]
         });
 
@@ -47,3 +49,47 @@ export const AIModel = async (topic: string, coachingOption: string, msg: string
         return null;
     }
 };
+
+
+export const ConvertTextToSpeech = async (text: string, expertName: keyof typeof VoiceId): Promise<string | null> => {
+    const accessKeyId = process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID;
+    const secretAccessKey = process.env.NEXT_PUBLIC_AWS_SECRET_KEY;
+
+    if (!accessKeyId || !secretAccessKey) {
+        console.error("AWS credentials are missing");
+        return null;
+    }
+
+    const pollyClient = new PollyClient({
+        region: "ap-south-1",
+        credentials:{
+            accessKeyId: accessKeyId as string,
+            secretAccessKey: secretAccessKey as string
+        }, 
+    });
+
+    const command = new SynthesizeSpeechCommand({
+        OutputFormat: "mp3",
+        Text: text,
+        VoiceId: expertName, // Now properly typed
+    });
+
+    try {
+        const response = await pollyClient.send(command);
+
+        if (!response.AudioStream) {
+            console.error("AudioStream is undefined");
+            return null;
+        }
+
+        const audioArrayBuffer = await response.AudioStream.transformToByteArray();
+        const audioBlob = new Blob([audioArrayBuffer], { type: "audio/mp3" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        return audioUrl;
+    } catch (error) {
+        console.error("Error in converting text to speech:", error);
+        return null;
+    }
+}; 
+

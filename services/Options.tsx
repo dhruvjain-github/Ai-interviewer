@@ -42,15 +42,15 @@ export const Coachingclass=[
 
 export const CoachingExperts=[
     {
-        name:"Jenny",
+        name:"Joanna",
         avtar:"/t1.avif"
     },
     {
-        name:"Tinna",
+        name:"Salli",
         avtar:"/t2.jpg"
     },
     {
-        name:"Michael",
+        name:"Matthew",
         avtar:"/t3.jpg"
     }
 ]
