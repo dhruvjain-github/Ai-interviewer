@@ -1,6 +1,6 @@
 "use client";
 import { api } from '@/convex/_generated/api';
-import { useQuery } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { useParams } from 'next/navigation';
 import { Id } from "@/convex/_generated/dataModel";
 import React, { useEffect, useRef, useState } from 'react';
@@ -34,10 +34,13 @@ const DiscussionRoom = () => {
     const [Loading, setLoading] = useState<boolean>(false);
     const [transcribe, setTranscribe] = useState<string>("");
     const [audiourl, setAudiourl] = useState<string | null>(null); // Fix type error
+    const UpdateConversation=useMutation(api.functions.Discussion.UpdateConversation)
 
     let texts: Record<number, string> = {};
 
-    const [conversatation, setConversatation] = useState<Message[]>([]);
+    const [conversatation, setConversatation] = useState<Message[]>([
+        { role: "assistant", content: "Hello, I am your AI assistant. To begin press Connect & tell me about yourself." },
+    ]);
 
     const DiscussionRoomData = roomid
         ? useQuery(api.functions.Discussion.GetDiscussion, {
@@ -154,8 +157,19 @@ const DiscussionRoom = () => {
             clearTimeout(silenceTimeout.current);
             silenceTimeout.current = null;
         }
+        
+        
 
         setEnableMic(false);
+        
+        if (DiscussionRoomData) {
+            console.log("DiscussionRoomData before update:", DiscussionRoomData);
+
+            await UpdateConversation({
+                id: DiscussionRoomData._id,
+                conversation: conversatation
+            });
+        }
         setLoading(false);
     };
 

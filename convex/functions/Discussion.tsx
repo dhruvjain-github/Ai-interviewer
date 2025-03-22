@@ -26,3 +26,16 @@ export const GetDiscussion = query({
     return result;
   }
 });
+
+
+export const UpdateConversation = mutation({
+  args:{
+    id:v.id('Discussion'),
+    conversation:v.any()
+  },
+  handler:async(ctx,args)=>{
+    await ctx.db.patch(args.id,{
+      conversation:args.conversation
+    })
+  }
+})
