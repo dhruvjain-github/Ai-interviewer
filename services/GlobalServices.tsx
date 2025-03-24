@@ -50,6 +50,42 @@ export const AIModel = async (topic: string, coachingOption: string, LastTwoMess
     }
 };
 
+export const AIModelToGenerateFeedbackAndNotes = async ( coachingOption: string, conversatation:any): Promise<any | null> => {
+    console.log("{GlobalServices} Requested Coaching Option:", coachingOption);
+
+    // Ensure the name exactly matches an existing option
+    const option = Coachingclass.find((item) => item.name.trim().toLowerCase() === coachingOption.trim().toLowerCase());
+
+    if (!option) {
+        console.error("Invalid coaching option or prompt missing", { coachingOption, availableOptions: Coachingclass.map(c => c.name) });
+        return null;
+    }
+
+    const PROMPT = (option.summeryPrompt)
+
+    try {
+        const completion = await openai.chat.completions.create({
+            model: "google/gemini-2.0-pro-exp-02-05:free",
+            messages: [
+                ...conversatation,
+                { role: "assistant", content: PROMPT },
+                
+            ]
+        });
+        
+        console.log("{GlobalServices}AI Response Full:", completion);
+        console.log("{GlobalServices}Generated Notes:", completion.choices[0]?.message || "No response");
+        
+
+        console.log("{GlobalServices}AI Response:", completion.choices[0]?.message || "No response");
+        return completion.choices[0]?.message || null;
+    } catch (error) {
+        console.error("Error generating AI response:", error);
+        return null;
+    }
+};
+
+
 
 export const ConvertTextToSpeech = async (text: string, expertName: keyof typeof VoiceId): Promise<string | null> => {
     const accessKeyId = process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID;

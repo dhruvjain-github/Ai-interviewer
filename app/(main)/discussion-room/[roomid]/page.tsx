@@ -35,7 +35,7 @@ const DiscussionRoom = () => {
     const [transcribe, setTranscribe] = useState<string>("");
     const [audiourl, setAudiourl] = useState<string | null>(null); // Fix type error
     const UpdateConversation=useMutation(api.functions.Discussion.UpdateConversation)
-
+    const [EnableFeedbackNotes, setEnableFeedbackNotes] = useState(false)
     let texts: Record<number, string> = {};
 
     const [conversatation, setConversatation] = useState<Message[]>([
@@ -72,7 +72,7 @@ const DiscussionRoom = () => {
 
             console.log("AI Response:", aiResp);
 
-            const voiceId = DiscussionRoomData.expertName as "Joanna" | "Salli" | "Matthew"; 
+            const voiceId = DiscussionRoomData.expertName as "Joanna" | "Ruth" | "Matthew"; 
             const url = await ConvertTextToSpeech(aiResp.content, voiceId);
             console.log("URL",url);
             
@@ -161,7 +161,7 @@ const DiscussionRoom = () => {
         
 
         setEnableMic(false);
-        
+
         if (DiscussionRoomData) {
             console.log("DiscussionRoomData before update:", DiscussionRoomData);
 
@@ -171,6 +171,7 @@ const DiscussionRoom = () => {
             });
         }
         setLoading(false);
+        setEnableFeedbackNotes(true);
     };
 
     return (
@@ -214,7 +215,10 @@ const DiscussionRoom = () => {
                     </div>
                 </div>
                 <div>
-                    <ChatBox conversatation={conversatation} />
+                    <ChatBox 
+                    conversatation={conversatation}
+                    EnableFeedbackNotes={EnableFeedbackNotes}
+                    coachingOption={DiscussionRoomData?.coachingOption} />
                 </div>
             </div>
             <div>

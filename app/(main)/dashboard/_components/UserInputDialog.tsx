@@ -1,5 +1,5 @@
 "use client"
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useContext, useState } from "react";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { CoachingExperts } from "@/services/Options";
@@ -18,6 +18,7 @@ import {
   } from "@/components/ui/dialog";
 import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { UserContext } from "@/app/_context/UserContext";
 
 
 interface CoachingOption {
@@ -38,22 +39,30 @@ const UserInputDialog: React.FC<UserInputDialogProps> = ({ children, CoachingOpt
     const [Loading, setLoading] = useState<boolean>(false)
     const [OpenDialog, setOpenDialog] = useState<boolean>(false)
     const router=useRouter()
-    
+    const { Userdata: userData } = useContext(UserContext);
+    console.log("{UserInputDialog.tsx}Fetched user data:", userData);
 
-    const OnclickNext=async()=>{
-        setLoading(true)
-        const result =await createNewDisscussion({
-            coachingOption:CoachingOptions.name,
-            topic:Topic,
-            expertName:selectedExpert
-        })
-        setLoading(false)
-        setOpenDialog(false)
-        // console
-        console.log("User Input data ",result)
-
-        router.push(`/discussion-room/${result}`)
-    }
+    const OnclickNext = async () => {
+      setLoading(true);
+      
+      if (!userData?._id) {
+          console.error("User ID is missing!", userData);
+          setLoading(false);
+          return;
+      }
+  
+      const result = await createNewDisscussion({
+          coachingOption: CoachingOptions.name,
+          topic: Topic,
+          expertName: selectedExpert,
+          uid: userData?._id, // Ensure this is not undefined
+      });
+  
+      setLoading(false);
+      setOpenDialog(false);
+      console.log("User Input data", result);
+      router.push(`/discussion-room/${result}`);
+  };
 
   return (
     <Dialog open={OpenDialog} onOpenChange={setOpenDialog}>
@@ -101,7 +110,7 @@ const UserInputDialog: React.FC<UserInputDialogProps> = ({ children, CoachingOpt
               </div>
               <div className="flex justify-end mt-5 gap-3">
                 <DialogClose asChild>
-                <Button variant={'ghost'} className="hover:cursor-pointer hover:bg-gray-200">Cancle</Button>
+                <Button variant={'ghost'} className="hover:cursor-pointer hover:bg-gray-200">Cancel</Button>
                 </DialogClose>
                 
                 <Button className="font-semibold hover:cursor-pointer" disabled={(!Topic||!selectedExpert||Loading)} onClick={OnclickNext}>

@@ -4,6 +4,7 @@ import { stackServerApp } from "../stack";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import {ConvexClientProvider} from "./ConvexClientProvider";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
       ><StackProvider app={stackServerApp}><StackTheme>
         <ConvexClientProvider>
           {children}
+          <Toaster/>
         </ConvexClientProvider>
         
       </StackTheme></StackProvider></body>
