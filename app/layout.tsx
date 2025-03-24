@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackServerApp } from "../stack";
@@ -31,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       ><StackProvider app={stackServerApp}><StackTheme>
-        <ConvexClientProvider>
+        <ConvexClientProvider >
           {children}
           <Toaster/>
         </ConvexClientProvider>
