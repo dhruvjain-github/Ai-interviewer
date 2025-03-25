@@ -7,6 +7,7 @@ import { useConvex } from 'convex/react'
 import Image from 'next/image' // Corrected import
 import React, { useContext, useEffect, useState } from 'react'
 import moment from 'moment' // Corrected import
+import { Link } from 'lucide-react'
 
 const Feedback = () => {
   const convex = useConvex()
@@ -63,7 +64,9 @@ const Feedback = () => {
               </div>
             </div>
             </div>
-            <Button variant="outline" className='invisible group-hover:visible'>View Feedback</Button>
+            <Link href={`/view-summery/${item._id}`}>
+            <Button variant="outline" className='invisible group-hover:visible'>View Notes</Button>
+            </Link>
           </div>
         ))}
       </div>

@@ -7,6 +7,7 @@ import { useConvex } from 'convex/react'
 import Image from 'next/image' // Corrected import
 import React, { useContext, useEffect, useState } from 'react'
 import moment from 'moment' // Corrected import
+import Link from 'next/link'
 
 const History = () => {
   const convex = useConvex()
@@ -63,7 +64,9 @@ const History = () => {
               </div>
             </div>
             </div>
+            <Link href={`/view-summery/${item._id}`}>
             <Button variant="outline" className='invisible group-hover:visible'>View Notes</Button>
+            </Link>
           </div>
         ))}
       </div>
