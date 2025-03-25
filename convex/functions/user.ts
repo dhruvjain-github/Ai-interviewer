@@ -23,3 +23,16 @@ export const CreateUser = mutation({
     });
   },
 });
+
+
+export const UpdateUserToken=mutation({
+  args:{
+    id:v.id('users'),
+    credits:v.number()
+  },
+  handler:async(ctx,args)=>{
+     await ctx.db.patch(args.id,{
+      credits:args.credits
+    })
+  }
+})

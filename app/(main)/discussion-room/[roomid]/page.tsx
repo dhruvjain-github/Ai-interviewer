@@ -3,7 +3,7 @@ import { api } from '@/convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
 import { useParams } from 'next/navigation';
 import { Id } from "@/convex/_generated/dataModel";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { CoachingExperts } from '@/services/Options';
 import Image from 'next/image';
 import { UserButton } from '@stackframe/stack';
@@ -13,6 +13,7 @@ import { AssemblyAI, RealtimeTranscriber } from 'assemblyai';
 import { AIModel, ConvertTextToSpeech, getToken } from '@/services/GlobalServices';
 import { Loader2Icon } from 'lucide-react';
 import ChatBox from './_components/ChatBox';
+import { UserContext } from '@/app/_context/UserContext';
 
 interface Expert {
     name: string;
@@ -26,6 +27,7 @@ interface Message {
 
 const DiscussionRoom = () => {
     const { roomid } = useParams() as { roomid?: string };
+    const [userData, setuserData] = useContext(UserContext)
     const [Expertinfo, setExpertinfo] = useState<Expert | null>(null);
     const [enableMic, setEnableMic] = useState(false);
     const realTimeTranscriber = useRef<RealtimeTranscriber | null>(null);
@@ -36,6 +38,7 @@ const DiscussionRoom = () => {
     const [audiourl, setAudiourl] = useState<string | null>(null); // Fix type error
     const UpdateConversation=useMutation(api.functions.Discussion.UpdateConversation)
     const [EnableFeedbackNotes, setEnableFeedbackNotes] = useState(false)
+    const updateUserToken=useMutation(api.functions.user.UpdateUserToken)
     let texts: Record<number, string> = {};
 
     const [conversatation, setConversatation] = useState<Message[]>([
@@ -79,6 +82,7 @@ const DiscussionRoom = () => {
             
             setAudiourl(url);
             setConversatation((prev) => [...prev, aiResp]);
+            await updateUserTokenMethod(aiResp.content) //update AI generated token
         }
 
         fetchData();
@@ -99,6 +103,7 @@ const DiscussionRoom = () => {
 
                 if (transcript.message_type === "FinalTranscript") {
                     setConversatation((prev) => [...prev, { role: "user", content: transcript.text }]);
+                    await updateUserTokenMethod(transcript.text) //update user generated token
                 }
 
                 const keys = Object.keys(texts).map(Number).sort((a, b) => a - b);
@@ -173,6 +178,18 @@ const DiscussionRoom = () => {
         setLoading(false);
         setEnableFeedbackNotes(true);
     };
+
+    const updateUserTokenMethod = async (text: string) => {
+        const tokenCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+        const result = await updateUserToken({
+            id: userData._id,
+            credits: Number(userData.credits) - Number(tokenCount)
+        });
+        setuserData((prev: any) => ({
+            ...prev,
+            credits: Number(userData.credits) - Number(tokenCount)
+        }));
+    }
 
     return (
         <div>

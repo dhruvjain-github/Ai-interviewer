@@ -18,4 +18,4 @@ export default defineSchema({
     summery:v.optional(v.any()),
     uid:v.optional(v.id('users'))
   })
-});
+}); 
