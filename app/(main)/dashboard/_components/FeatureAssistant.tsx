@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import UserInputDialog from './UserInputDialog'
+import ProfileDialog from './ProfileDialog'
 
 // 1 error is pending
 
@@ -33,7 +34,9 @@ const FeatureAssistant = () => {
                         Welcome back, {hydratedUser}
                     </h2>
                 </div>
+                <ProfileDialog>
                 <Button className="mt-4 md:mt-0 font-semibold">Profile</Button>
+                </ProfileDialog>
             </motion.div>
 
             {/* Expert List Section */}
