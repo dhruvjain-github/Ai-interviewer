@@ -123,9 +123,13 @@ export const ConvertTextToSpeech = async (text: string, expertName: keyof typeof
         const audioUrl = URL.createObjectURL(audioBlob);
 
         return audioUrl;
-    } catch (error) {
-        console.error("Error in converting text to speech:", error);
+    } catch (error: any) { // Cast error to any
+        if (error.name === "UnrecognizedClientException") {
+            console.error("AWS credentials are invalid or the account is suspended");
+        } else {
+            console.error("Error in converting text to speech:", error);
+        }
         return null;
     }
-}; 
+};
 

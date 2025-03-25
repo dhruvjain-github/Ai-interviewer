@@ -38,8 +38,8 @@ const UserInputDialog: React.FC<UserInputDialogProps> = ({ children, CoachingOpt
     const createNewDisscussion = useMutation(api.functions.Discussion.CreateDiscussion)
     const [Loading, setLoading] = useState<boolean>(false)
     const [OpenDialog, setOpenDialog] = useState<boolean>(false)
-    const router=useRouter()
-    const { Userdata: userData } = useContext(UserContext);
+    const router = useRouter()
+    const { userData } = useContext(UserContext); // Corrected variable name
     console.log("{UserInputDialog.tsx}Fetched user data:", userData);
 
     const OnclickNext = async () => {
@@ -55,7 +55,7 @@ const UserInputDialog: React.FC<UserInputDialogProps> = ({ children, CoachingOpt
           coachingOption: CoachingOptions.name,
           topic: Topic,
           expertName: selectedExpert,
-          uid: userData?._id, // Ensure this is not undefined
+          uid: userData._id, // Ensure this is not undefined
       });
   
       setLoading(false);
