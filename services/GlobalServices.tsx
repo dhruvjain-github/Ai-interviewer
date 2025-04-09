@@ -35,7 +35,7 @@ export const AIModel = async (topic: string, coachingOption: string, LastTwoMess
 
     try {
         const completion = await openai.chat.completions.create({
-            model: "google/gemini-2.0-pro-exp-02-05:free",
+            model: "google/gemini-2.5-pro-exp-03-25:free",
             messages: [
                 { role: "assistant", content: PROMPT },
                 ...LastTwoMessage
@@ -65,7 +65,7 @@ export const AIModelToGenerateFeedbackAndNotes = async ( coachingOption: string,
 
     try {
         const completion = await openai.chat.completions.create({
-            model: "google/gemini-2.0-pro-exp-02-05:free",
+            model: "google/gemini-2.5-pro-exp-03-25:free",
             messages: [
                 ...conversatation,
                 { role: "assistant", content: PROMPT },

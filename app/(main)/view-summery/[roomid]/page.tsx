@@ -32,36 +32,39 @@ const ViewSummery = () => {
             {DiscussionRoomData && (
                 <div className='flex justify-between items-end'>
                     <div className='flex items-center gap-7'> 
-                    <Image
-                        src={GetAbstractImages(DiscussionRoomData.coachingOption)}
-                        alt='abstract'
-                        height={100}
-                        width={100}
-                        className='rounded-full h-[70px] w-[70px]'
-                    />
-                    <div>
-                        <h2 className='text-lg font-bold '>{DiscussionRoomData.topic}</h2>
-                        <p className='text-gray-500'>{DiscussionRoomData.coachingOption}</p>
-                        
+                        <Image
+                            src={GetAbstractImages(DiscussionRoomData.coachingOption)}
+                            alt='abstract'
+                            height={100}
+                            width={100}
+                            className='rounded-full h-[70px] w-[70px]'
+                        />
+                        <div>
+                            <h2 className='text-lg font-bold'>{DiscussionRoomData.topic}</h2>
+                            <span className='text-gray-500'>{DiscussionRoomData.coachingOption}</span>
+                        </div>
                     </div>
-                   
-                </div>
-                <h2 className='text-gray-400'>{moment(DiscussionRoomData._creationTime).fromNow()}</h2>
+                    <span className='text-gray-400'>{moment(DiscussionRoomData._creationTime).fromNow()}</span>
                 </div>
             )}
 
             <div className='grid grid-cols-1 lg:grid-cols-4 gap-5 mt-5'>
                 <div className='col-span-3'>
                     <h2 className='text-lg font-bold mb-6'>Summery of Your Conversation</h2>
-                    <SummeryBox summery={DiscussionRoomData?.summery}/>
+                    <div className='border border-gray-300 rounded-lg p-5 shadow-md bg-white'>
+                        <SummeryBox summery={DiscussionRoomData?.summery} />
+                    </div>
                 </div>
                 <div className='col-span-2'></div>
-                <h2 className='text-lg font-bold mb-6'>Your Conversatation</h2>
                 <div>
-                    {DiscussionRoomData?.conversation &&<ChatBox conversatation={DiscussionRoomData?.conversation}
-                        coachingOption={DiscussionRoomData?.coachingOption}
-                        EnableFeedbackNotes={false}
-                    />}
+                    <h2 className='text-lg font-bold mb-6'>Your Conversation</h2>
+                    {DiscussionRoomData?.conversation && (
+                        <ChatBox
+                            conversatation={DiscussionRoomData?.conversation}
+                            coachingOption={DiscussionRoomData?.coachingOption}
+                            EnableFeedbackNotes={false}
+                        />
+                    )}
                 </div>
             </div>
         </div>

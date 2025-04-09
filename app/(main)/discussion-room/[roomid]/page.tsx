@@ -27,7 +27,7 @@ interface Message {
 
 const DiscussionRoom = () => {
     const { roomid } = useParams() as { roomid?: string };
-    const [userData, setuserData] = useContext(UserContext)
+    const { userData, setUserData } = useContext(UserContext);
     const [Expertinfo, setExpertinfo] = useState<Expert | null>(null);
     const [enableMic, setEnableMic] = useState(false);
     const realTimeTranscriber = useRef<RealtimeTranscriber | null>(null);
@@ -36,9 +36,9 @@ const DiscussionRoom = () => {
     const [Loading, setLoading] = useState<boolean>(false);
     const [transcribe, setTranscribe] = useState<string>("");
     const [audiourl, setAudiourl] = useState<string | null>(null); // Fix type error
-    const UpdateConversation=useMutation(api.functions.Discussion.UpdateConversation)
-    const [EnableFeedbackNotes, setEnableFeedbackNotes] = useState(false)
-    const updateUserToken=useMutation(api.functions.user.UpdateUserToken)
+    const UpdateConversation = useMutation(api.functions.Discussion.UpdateConversation);
+    const [EnableFeedbackNotes, setEnableFeedbackNotes] = useState(false);
+    const updateUserToken = useMutation(api.functions.user.UpdateUserToken);
     let texts: Record<number, string> = {};
 
     const [conversatation, setConversatation] = useState<Message[]>([
@@ -77,12 +77,11 @@ const DiscussionRoom = () => {
 
             const voiceId = DiscussionRoomData.expertName as "Joanna" | "Ruth" | "Matthew"; 
             const url = await ConvertTextToSpeech(aiResp.content, voiceId);
-            console.log("URL",url);
-            
+            console.log("URL", url);
             
             setAudiourl(url);
             setConversatation((prev) => [...prev, aiResp]);
-            await updateUserTokenMethod(aiResp.content) //update AI generated token
+            await updateUserTokenMethod(aiResp.content); //update AI generated token
         }
 
         fetchData();
@@ -103,7 +102,7 @@ const DiscussionRoom = () => {
 
                 if (transcript.message_type === "FinalTranscript") {
                     setConversatation((prev) => [...prev, { role: "user", content: transcript.text }]);
-                    await updateUserTokenMethod(transcript.text) //update user generated token
+                    await updateUserTokenMethod(transcript.text); //update user generated token
                 }
 
                 const keys = Object.keys(texts).map(Number).sort((a, b) => a - b);
@@ -163,8 +162,6 @@ const DiscussionRoom = () => {
             silenceTimeout.current = null;
         }
         
-        
-
         setEnableMic(false);
 
         if (DiscussionRoomData) {
@@ -185,11 +182,11 @@ const DiscussionRoom = () => {
             id: userData._id,
             credits: Number(userData.credits) - Number(tokenCount)
         });
-        setuserData((prev: any) => ({
+        setUserData((prev: any) => ({
             ...prev,
             credits: Number(userData.credits) - Number(tokenCount)
         }));
-    }
+    };
 
     return (
         <div>
@@ -211,9 +208,8 @@ const DiscussionRoom = () => {
                                 <h2 className="text-gray-600 font-semibold mt-2 text-center">{Expertinfo.name}</h2>
                             </div>
                         )}
-                       {audiourl && <audio src={audiourl} autoPlay />}
+                        {audiourl && <audio src={audiourl} autoPlay />}
 
-                        
                         <div className="absolute bottom-4 right-4 bg-gray-300 p-10 rounded-xl shadow-md">
                             <UserButton />
                         </div>
