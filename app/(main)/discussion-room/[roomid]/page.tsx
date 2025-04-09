@@ -14,7 +14,7 @@ import { AIModel, ConvertTextToSpeech, getToken } from '@/services/GlobalService
 import { Loader2Icon } from 'lucide-react';
 import ChatBox from './_components/ChatBox';
 import { UserContext } from '@/app/_context/UserContext';
-
+import Webcam from "react-webcam";
 interface Expert {
     name: string;
     avtar: string;
@@ -39,6 +39,7 @@ const DiscussionRoom = () => {
     const UpdateConversation = useMutation(api.functions.Discussion.UpdateConversation);
     const [EnableFeedbackNotes, setEnableFeedbackNotes] = useState(false);
     const updateUserToken = useMutation(api.functions.user.UpdateUserToken);
+    const [showWebcam, setShowWebcam] = useState(true);
     let texts: Record<number, string> = {};
 
     const [conversatation, setConversatation] = useState<Message[]>([
@@ -210,12 +211,26 @@ const DiscussionRoom = () => {
                         )}
                         {audiourl && <audio src={audiourl} autoPlay />}
 
-                        <div className="absolute bottom-4 right-4 bg-gray-300 p-10 rounded-xl shadow-md">
-                            <UserButton />
+                        <div className="absolute bottom-4 right-4 bg-gray-300  rounded-xl shadow-md h-[200px] w-[200px] flex items-center justify-center">
+                            {showWebcam ? (
+                                <Webcam 
+                                    className="rounded-xl h-full w-full object-cover" 
+                                />
+                            ) : (
+                                <div className="h-full w-full flex items-center justify-center">
+                                    <UserButton />
+                                </div>
+                            )}
                         </div>
                     </div>
 
                     <div className="flex justify-center mt-5">
+                        <Button
+                            className="px-4 py-2 mr-4"
+                            onClick={() => setShowWebcam((prev) => !prev)}
+                        >
+                            {showWebcam ? "Disable Camera" : "Enable Camera"}
+                        </Button>
                         {!enableMic ? (
                             <Button className="px-6 py-2 text-lg font-semibold" onClick={connectToServer} disabled={Loading}>
                                 {Loading && <Loader2Icon className="animate-spin" />}Connect
