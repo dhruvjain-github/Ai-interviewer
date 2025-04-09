@@ -12,8 +12,8 @@ const Header = () => {
         width={200} 
         height={200}
         />
-
         </div>
+        
         <UserButton/>
     </div>
   )

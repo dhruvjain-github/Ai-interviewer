@@ -17,12 +17,12 @@ interface ProfileDialogProps {
 
 const ProfileDialog: React.FC<ProfileDialogProps> = ({ children }) => {
   return (
-    <Dialog>
+    <Dialog >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gray-800 mb-2">Your Profile</DialogTitle>
-          <DialogDescription>
+          <DialogDescription asChild>
             <Credits />
           </DialogDescription>
         </DialogHeader>
