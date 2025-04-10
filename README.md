@@ -1,61 +1,98 @@
-# AI Voice Assistant
 
-An AI-powered voice assistant that helps you perform tasks, answer questions, and interact with your system using natural language commands.
+   # AI Voice Assistant
+
+AI Voice Assistant is a cutting-edge application designed to provide intelligent voice-based interactions. It leverages modern web technologies, cloud services, and AI models to deliver a seamless user experience.
 
 ## Features
 
-- Speech-to-text and text-to-speech capabilities.
-- Natural language understanding for executing commands.
-- Integration with various APIs and system utilities.
-- Customizable and extensible for additional features.
+- Real-time transcription and voice-to-text conversion.
+- Text-to-speech synthesis using AWS Polly.
+- Integration with AssemblyAI for transcription services.
+- Dynamic feedback and note generation using AI models.
+- User authentication and session management.
 
-## Installation
+## Technologies Used
+
+- **Frontend**: React, Next.js, TailwindCSS
+- **Backend**: Convex, Node.js
+- **Cloud Services**:
+  - AWS Polly for text-to-speech.
+  - AssemblyAI for transcription.
+- **State Management**: Convex React
+- **UI Components**: Stackframe UI
+- **Other Libraries**:
+  - RecordRTC for audio recording.
+  - Sonner for notifications.
+  - Lucide React for icons.
+
+## Prerequisites
+
+- Node.js (v16 or later)
+- npm or yarn
+- AWS account for Polly
+- AssemblyAI API key
+- Convex account for backend services
+
+## Setup Instructions
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/dhruvjain-github/Ai-interviewer
-   cd ai-voice-assistent
+   git clone https://github.com/your-repo/ai-voice-assistant.git
+   cd ai-voice-assistant
    ```
 
 2. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   npm install
    ```
 
-3. Set up any required API keys or environment variables in a `.env` file.
+3. Configure the environment variables:
+   Create a `.env.local` file in the root directory and add the following:
 
-   **Example `.env` file:**
+   ```env
+   NEXT_PUBLIC_STACK_PROJECT_ID=YOUR_STACK_PROJECT_ID
+   NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY=YOUR_STACK_PUBLISHABLE_CLIENT_KEY
+   STACK_SECRET_SERVER_KEY=YOUR_STACK_SECRET_SERVER_KEY
+
+   # Deployment used by `npx convex dev`
+   CONVEX_DEPLOYMENT=YOUR_CONVEX_DEPLOYMENT
+
+   NEXT_PUBLIC_CONVEX_URL=YOUR_CONVEX_URL
+
+   ASSEMBLY_API_KEY=YOUR_ASSEMBLY_API_KEY
+
+   NEXT_PUBLIC_API_KEY=YOUR_API_KEY
+
+   NEXT_PUBLIC_AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_ID
+   NEXT_PUBLIC_AWS_SECRET_KEY=YOUR_AWS_SECRET_ACCESS_KEY
    ```
-   AWS_ACCESS_KEY_ID=your-access-key-id
-   AWS_SECRET_ACCESS_KEY=your-secret-access-key
-   ```
 
-## Usage
-
-1. Run the application:
+4. Start the development server:
    ```bash
-   python main.py
+   npm run dev
    ```
 
-2. Speak your commands into the microphone and let the assistant handle the rest.
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix:
-   ```bash
-   git checkout -b feature-name
+5. Open the application in your browser:
    ```
-3. Commit your changes and push to your fork:
-   ```bash
-   git commit -m "Description of changes"
-   git push origin feature-name
+   http://localhost:3000
    ```
-4. Open a pull request on the main repository.
+
+## Deployment
+
+To deploy the application, use the following command:
+```bash
+npx convex deploy
+```
+
+Ensure that the `.env.local` file is properly configured with production credentials.
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See the LICENSE file for details.
 
+## Acknowledgments
+
+- [AWS Polly](https://aws.amazon.com/polly/)
+- [AssemblyAI](https://www.assemblyai.com/)
+- [Convex](https://convex.dev/)
+- [Next.js](https://nextjs.org/)
