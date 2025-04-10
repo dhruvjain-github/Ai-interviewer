@@ -93,8 +93,10 @@ const DiscussionRoom = () => {
         try {
             setEnableMic(true);
 
+            const token : string | null = await getToken();
+
             realTimeTranscriber.current = new RealtimeTranscriber({
-                token: await getToken(),
+                token: token,
                 sampleRate: 16_000,
             });
 
