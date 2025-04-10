@@ -137,7 +137,7 @@ const DiscussionRoom = () => {
                         realTimeTranscriber.current.sendAudio(buffer);
 
                         silenceTimeout.current = setTimeout(() => {
-                            console.log("User stopped talking");
+                            // console.log("User stopped talking");
                         }, 2000);
                     },
                 });
@@ -171,7 +171,7 @@ const DiscussionRoom = () => {
         setEnableMic(false);
 
         if (DiscussionRoomData) {
-            console.log("DiscussionRoomData before update:", DiscussionRoomData);
+            // console.log("DiscussionRoomData before update:", DiscussionRoomData);
 
             await UpdateConversation({
                 id: DiscussionRoomData._id,

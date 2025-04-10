@@ -21,7 +21,7 @@ const openai = new OpenAI({
 });
 
 export const AIModel = async (topic: string, coachingOption: string, LastTwoMessage:any): Promise<any | null> => {
-    console.log("Requested Coaching Option:", coachingOption);
+    // console.log("Requested Coaching Option:", coachingOption);
 
     // Ensure the name exactly matches an existing option
     const option = Coachingclass.find((item) => item.name.trim().toLowerCase() === coachingOption.trim().toLowerCase());
@@ -42,7 +42,7 @@ export const AIModel = async (topic: string, coachingOption: string, LastTwoMess
             ]
         });
 
-        console.log("AI Response:", completion.choices[0]?.message || "No response");
+        // console.log("AI Response:", completion.choices[0]?.message || "No response");
         return completion.choices[0]?.message || null;
     } catch (error) {
         console.error("Error generating AI response:", error);
@@ -51,7 +51,7 @@ export const AIModel = async (topic: string, coachingOption: string, LastTwoMess
 };
 
 export const AIModelToGenerateFeedbackAndNotes = async ( coachingOption: string, conversatation:any): Promise<any | null> => {
-    console.log("{GlobalServices} Requested Coaching Option:", coachingOption);
+    // console.log("{GlobalServices} Requested Coaching Option:", coachingOption);
 
     // Ensure the name exactly matches an existing option
     const option = Coachingclass.find((item) => item.name.trim().toLowerCase() === coachingOption.trim().toLowerCase());
@@ -73,11 +73,11 @@ export const AIModelToGenerateFeedbackAndNotes = async ( coachingOption: string,
             ]
         });
         
-        console.log("{GlobalServices}AI Response Full:", completion);
-        console.log("{GlobalServices}Generated Notes:", completion.choices[0]?.message || "No response");
+        // console.log("{GlobalServices}AI Response Full:", completion);
+        // console.log("{GlobalServices}Generated Notes:", completion.choices[0]?.message || "No response");
         
 
-        console.log("{GlobalServices}AI Response:", completion.choices[0]?.message || "No response");
+        // console.log("{GlobalServices}AI Response:", completion.choices[0]?.message || "No response");
         return completion.choices[0]?.message || null;
     } catch (error) {
         console.error("Error generating AI response:", error);

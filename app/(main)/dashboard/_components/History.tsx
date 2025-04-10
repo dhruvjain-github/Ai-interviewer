@@ -16,15 +16,15 @@ const History = () => {
 
   const GetDiscussionRoom = async () => {
     if (!userData?._id) {
-      console.log("{History.tsx} No user ID found, skipping fetch.");
+      // console.log("{History.tsx} No user ID found, skipping fetch.");
       return; // Ensure user ID exists
     }
     try {
-      console.log("{History.tsx} Fetching discussions for user ID:", userData._id);
+      // console.log("{History.tsx} Fetching discussions for user ID:", userData._id);
       const result = await convex.query(api.functions.Discussion.GetAllDiscussion, {
         uid: userData._id
       })
-      console.log("{History.tsx} Get All Discussion result:", result);
+      // console.log("{History.tsx} Get All Discussion result:", result);
       setDiscussionList(result || []) // Ensure array is set
     } catch (error) {
       console.error("{History.tsx} Error fetching discussions:", error)
@@ -33,7 +33,7 @@ const History = () => {
 
   useEffect(() => {
     if (userData) {
-      console.log("{History.tsx} useEffect called with userData:", userData);
+      // console.log("{History.tsx} useEffect called with userData:", userData);
       GetDiscussionRoom();
     }
   }, [userData]) // Ensure userData is fully loaded before calling GetDiscussionRoom

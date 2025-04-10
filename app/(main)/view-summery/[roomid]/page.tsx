@@ -20,7 +20,7 @@ const ViewSummery = () => {
             id: roomid as Id<"Discussion">,
         })
         : null;
-    console.log("{View-summery}DiscussionRoomData", DiscussionRoomData);
+    //console.log("{View-summery}DiscussionRoomData", DiscussionRoomData);
 
     const GetAbstractImages = (option: any) => {
         const coachingOption = Coachingclass.find((e) => e.name === option);

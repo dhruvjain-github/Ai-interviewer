@@ -31,14 +31,14 @@ const ChatBox = ({ conversatation, EnableFeedbackNotes, coachingOption }: any) =
             setLoading(true);
     
             const result = await AIModelToGenerateFeedbackAndNotes(coachingOption, conversatation);
-            console.log("{ChatBox} Generated Feedback Notes:", result.content);
+            // console.log("{ChatBox} Generated Feedback Notes:", result.content);
     
             await updateSummery({
                 id: roomid as any, 
                 summery: result.content,
             });
             setLoading(false);
-            console.log("{ChatBox} Summary updated successfully.");
+            // console.log("{ChatBox} Summary updated successfully.");
             toast("Feedback/Notes generated successfully.");
         } catch (error) {
             setLoading(false);

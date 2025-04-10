@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button'
 import { api } from '@/convex/_generated/api'
 import { Coachingclass } from '@/services/Options'
 import { useConvex } from 'convex/react'
-import Image from 'next/image' // Corrected import
+import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
-import moment from 'moment' // Corrected import
+import moment from 'moment'
 import { Link } from 'lucide-react'
 
 const Feedback = () => {
@@ -16,15 +16,12 @@ const Feedback = () => {
 
   const GetDiscussionRoom = async () => {
     if (!userData?._id) {
-      console.log("{History.tsx} No user ID found, skipping fetch.");
       return; // Ensure user ID exists
     }
     try {
-      console.log("{History.tsx} Fetching discussions for user ID:", userData._id);
       const result = await convex.query(api.functions.Discussion.GetAllDiscussion, {
         uid: userData._id
       })
-      console.log("{History.tsx} Get All Discussion result:", result);
       setDiscussionList(result || []) // Ensure array is set
     } catch (error) {
       console.error("{History.tsx} Error fetching discussions:", error)
@@ -33,7 +30,6 @@ const Feedback = () => {
 
   useEffect(() => {
     if (userData) {
-      console.log("{History.tsx} useEffect called with userData:", userData);
       GetDiscussionRoom();
     }
   }, [userData]) // Ensure userData is fully loaded before calling GetDiscussionRoom
@@ -49,7 +45,6 @@ const Feedback = () => {
       {discussionList.length === 0 && (
         <h2 className='text-gray-500'>You don't have any previous Feedback</h2>
       )}
-
       <div className='mt-5'>
         {discussionList.map((item: any, index: number) => (item.coachingOption === 'Mock Interviews' || item.coachingOption === 'Ques Ans Prep') && (
           <div key={index} className='cursor-pointer pb-4 border-b-[2px] mb-4 group flex justify-between items-center'>

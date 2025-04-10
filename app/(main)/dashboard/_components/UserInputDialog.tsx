@@ -40,7 +40,7 @@ const UserInputDialog: React.FC<UserInputDialogProps> = ({ children, CoachingOpt
     const [OpenDialog, setOpenDialog] = useState<boolean>(false)
     const router = useRouter()
     const { userData } = useContext(UserContext); // Corrected variable name
-    console.log("{UserInputDialog.tsx}Fetched user data:", userData);
+    // console.log("{UserInputDialog.tsx}Fetched user data:", userData);
 
     const OnclickNext = async () => {
       setLoading(true);
@@ -60,7 +60,7 @@ const UserInputDialog: React.FC<UserInputDialogProps> = ({ children, CoachingOpt
   
       setLoading(false);
       setOpenDialog(false);
-      console.log("User Input data", result);
+      // console.log("User Input data", result);
       router.push(`/discussion-room/${result}`);
   };
 
