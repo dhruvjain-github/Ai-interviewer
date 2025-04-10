@@ -93,7 +93,10 @@ const DiscussionRoom = () => {
         try {
             setEnableMic(true);
 
-            const token : string | null = await getToken();
+            const token = await getToken();
+            if (!token) {
+                throw new Error("Failed to retrieve token");
+            }
 
             realTimeTranscriber.current = new RealtimeTranscriber({
                 token: token,
